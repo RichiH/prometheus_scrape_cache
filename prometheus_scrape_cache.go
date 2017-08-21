@@ -1,13 +1,16 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
-//	"log"
+	"log"
 	"net/http"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // TODO
@@ -18,6 +21,8 @@ import (
 // systemd unit file
 
 func main() {
+	flag.Parse()
+
 	resp, err_get := http.Get("http://demo.robustperception.io:9090/metrics")
 	if err_get != nil {
 		// TODO handle error
@@ -44,4 +49,8 @@ func main() {
 
 
 
+	// Set up Prometheus metrics endpoint
+	var addr = flag.String("listen-address", ":8080", "The address to listen on for HTTP requests.")
+	http.Handle("/prometheus_scrape_cache/metrics", promhttp.Handler())
+	log.Fatal(http.ListenAndServe(*addr, nil))
 }
