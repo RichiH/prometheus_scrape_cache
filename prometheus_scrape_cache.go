@@ -19,7 +19,7 @@ import (
 // metrics endpoint
 // logs
 // systemd unit file
-// proper match & append instead ReplaceAllString
+// proper match & append instead ReplaceAllString .* then $1
 
 func main() {
 	flag.Parse()
