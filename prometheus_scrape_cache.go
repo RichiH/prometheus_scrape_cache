@@ -23,6 +23,9 @@ import (
 // proper match & append instead ReplaceAllString .* then $1
 // always pass through HTTP return code
 // handle already-existing timestamps (positive match on anything which is a valid line, but without timestamp)
+// https://golang.org/pkg/net/http/#ServeMux
+// event & timeout driven function routing
+// put in X-header for exposition format
 
 func main() {
 	flag.Parse()
