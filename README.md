@@ -2,7 +2,7 @@
 
 This is basically a caching reverse proxy which adds timestamps to scraped metrics.
 Think of it as a pullgateway instead of a [pushgateway](https://github.com/prometheus/pushgateway).
-I might rename it pullgateway; TBD.
+I might rename it to pullgateway; we will find out together.
 
 # Why?
 
