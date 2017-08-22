@@ -6,10 +6,10 @@ I might rename it pullgateway; TBD.
 
 # Why?
 
-Prometheus 1.x and 2.0.x have globally synchronized scrape offsets as long as they are fed with the same service discovery.
+Prometheus 1.x and 2.0.x have globally synchronized scrape offsets as long as they are fed from the same service discovery.
 This will likely change with 2.1.x and later.
 Currently, a standard caching proxy will do the right thing even if you're not aware of the Prometheus-internal scrape implementation.
-After that, the load on your scrape targets will multiply.
+After that, the load on your scrape targets will multiply in any HA setup.
 This tool is written to avoid the fiery death of SNMP devices attacked via the [snmp_exporter](https://github.com/prometheus/snmp_exporter), but I can't rule out that it will have other valid uses.
 
 As a general rule of thumb, you should only use this program if your load tests confirmed that you need it.
