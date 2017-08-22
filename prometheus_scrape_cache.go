@@ -20,6 +20,8 @@ import (
 // logs
 // systemd unit file
 // proper match & append instead ReplaceAllString .* then $1
+// https://golang.org/pkg/net/http/#ServeMux
+// event & timeout driven function routing
 
 func main() {
 	flag.Parse()
