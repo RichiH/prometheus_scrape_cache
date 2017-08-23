@@ -17,7 +17,6 @@ import (
 // cli opt base url
 // cli opt timeout
 // cli opt for own endpoint to allow layered scraping caches
-// metrics endpoint
 // logs
 // systemd unit file
 // proper match & append instead ReplaceAllString .* then $1
