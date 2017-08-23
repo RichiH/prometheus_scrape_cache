@@ -2,7 +2,7 @@ verbose: true
 go:
     cgo: false
 repository:
-    path: github.com/axelsteiner/prometheus_scrape_cache
+    path: github.com/richih/prometheus_scrape_cache
 build:
     binaries:
         - name: prometheus_scrape_cache

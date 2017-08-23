@@ -33,9 +33,9 @@ func main() {
 		showVersion = flag.Bool("version", false, "Print version information.")
 		listenAddress = flag.String("web.listen-address", ":8080", "Address to listen on for web interface and telemetry.")
 		metricsPath   = flag.String("web.telemetry-path", "/prometheus_scrape_cache/metrics", "Path under which to expose metrics.")
-		baseUrl = flag.String("base.url", "http://localhost:8080/metrics", "Base URL to scrape from")
+		baseUrl = flag.String("base.url", "http://demo.robustperception.io:9090/metrics", "Base URL to scrape from")
+		//TODO remove demo URL and force user to set a value
 	)
-
 	flag.Parse()
 
 	if *showVersion {
@@ -59,7 +59,7 @@ func main() {
 			// TODO handle error
 		}
 		bodyString := string(bodyBytes)
-		//		fmt.Println(bodyString)
+		// fmt.Println(bodyString)
 		// build regexp
 		var re = regexp.MustCompile("(?m)(^[^#].*$)")
 		reply_string := re.ReplaceAllString(bodyString, `$1 `+strconv.Itoa(int(epoch)))
