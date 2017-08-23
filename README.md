@@ -22,6 +22,9 @@ That being said, you can also use the scrape cache to sync the results stored wi
 
 The scrape cache is completely transparent and will forward both HTTP code and body; only `/prometheus_scrape_cache/*`is reserved for its own use.
 
+You will need one instance of the scrape cache per exporter/instrumentation.
+This keeps the implementation sane, scales well, and follows the Unix^w microservice mantra of "one thing well".
+
 
 # Current caveats
 
