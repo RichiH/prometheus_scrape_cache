@@ -1,25 +1,22 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"regexp"
 	"strconv"
 	"time"
-	"os"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 // TODO
-// cli opt base url
 // cli opt timeout
 // cli opt for own endpoint to allow layered scraping caches
-// logs
 // systemd unit file
 // proper match & append instead ReplaceAllString .* then $1
 // always pass through HTTP return code
@@ -30,36 +27,35 @@ import (
 
 func main() {
 	var (
-		showVersion = flag.Bool("version", false, "Print version information.")
-		listenAddress = flag.String("web.listen-address", ":8080", "Address to listen on for web interface and telemetry.")
-		metricsPath   = flag.String("web.telemetry-path", "/prometheus_scrape_cache/metrics", "Path under which to expose metrics.")
-		baseUrl = flag.String("base.url", "http://demo.robustperception.io:9090/metrics", "Base URL to scrape from")
+		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":8080").String()
+		metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose metrics.").Default("/prometheus_scrape_cache/metrics").String()
+		baseUrl       = kingpin.Flag("base.url", "Base URL to scrape from").Default("http://demo.robustperception.io:9090/metrics").String()
 		//TODO remove demo URL and force user to set a value
 	)
-	flag.Parse()
 
-	if *showVersion {
-		fmt.Fprintln(os.Stdout, version.Print("prometheus_scrape_cache"))
-		os.Exit(0)
-	}
+	log.AddFlags(kingpin.CommandLine)
+	kingpin.Version(version.Print("prometheus_scrape_cache"))
+	kingpin.HelpFlag.Short('h')
+	kingpin.Parse()
 
-	resp, err_get := http.Get(*baseUrl)
-	if err_get != nil {
-		// TODO handle error
+	log.Infoln("Starting prometheus_scrape_cache", version.Info())
+	log.Infoln("Build context", version.BuildContext())
+
+	resp, err := http.Get(*baseUrl)
+	if err != nil {
+		log.Fatalf("Couldn't scrape metrics: %s", err)
 	}
 	epoch := time.Now().Unix()
-	fmt.Println(epoch)
 
 	// close connection
 	defer resp.Body.Close()
 
 	if resp.StatusCode == 200 { // OK
-		bodyBytes, err2 := ioutil.ReadAll(resp.Body)
-		if err2 != nil {
-			// TODO handle error
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalf("Couldn't read body: %s", err)
 		}
 		bodyString := string(bodyBytes)
-		// fmt.Println(bodyString)
 		// build regexp
 		var re = regexp.MustCompile("(?m)(^[^#].*$)")
 		reply_string := re.ReplaceAllString(bodyString, `$1 `+strconv.Itoa(int(epoch)))
