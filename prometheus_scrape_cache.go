@@ -53,6 +53,7 @@ func main() {
 	if resp.StatusCode == 200 { // OK
 		bodyBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
+			// TODO For production, we will need to save the text & error code and return that for any scrapes
 			log.Fatalf("Couldn't read body: %s", err)
 		}
 		bodyString := string(bodyBytes)
