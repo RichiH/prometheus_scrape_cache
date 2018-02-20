@@ -37,3 +37,7 @@ This keeps the implementation sane, scales well, and follows the Unix^w microser
 * New staleness in Prometheus 2.x is not yet possible with this tool, but that's on the TODO list
 * It's currently impossible to get at the metrics of a scrape cache behind another scrape cache
 * If you scrape anything which already has timestamps, things go boom for now
+
+# Further reading
+
+* Slices are flushed out after 0.5 * slice length, per default 1h: https://github.com/prometheus/tsdb/blob/494acd307058387ced7646f9996b0f7372eaa558/db.go#L377-L392 
